@@ -80,32 +80,3 @@ LMS.EDU.LessonProgram.ViewOnlineLessonProgramForStudent = {
   }
 };
 ```
-
-##### ../Cockpit/ViewCockpit/.
-
-```js
-
-view: function () {
-    PHI.UI.Transaction.load('/Cockpit/ViewCockpit', null, function (n) {
-      PHI.UI.Transaction.refreshCalendar('event-calendar', 'detail', n.ScriptBag.Events, function (t) {
-      
-        t.type == 'Lesson Program' && (n.Account.Roles.toUpperCase().includes('4F17F639-335A-4CDF-9DB5-09B67C72D8B6') ?
-        LMS.EDU.LessonProgram.ViewOnlineLessonProgramForStudent.start(t.no) : LMS.EDU.LessonProgram.ViewOnlineLessonProgramForInstructor.start(t.no));
-        
-        t.type == 'Meeting' && LMS.EDU.Meeting.ViewMeeting.start(t.no);
-        
-        t.type == 'Evaluation' && (n.Account.Roles.toUpperCase().includes('4F17F639-335A-4CDF-9DB5-09B67C72D8B6') ?
-        LMS.EDU.Evaluation.ListEvaluationForStudent.start(t.no) : LMS.EDU.Evaluation.ListEvaluation.start(t.no))
-        
-      });
-      PHI.UI.Transaction.hideHeaderAndFooter()
-    });
-    var n = 300,
-    t = setInterval(function () {
-      n = n - 1;
-      n == 0 && LMS.CORE.Cockpit.ViewCockpit.isNewSession();
-      n < 0 && (n = 300)
-    }, 1000)
-  },
-
-´´´
